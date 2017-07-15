@@ -6,20 +6,32 @@ class Cuisine(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=63)
 
+    def __str__(self):
+        return self.name
+
 
 class Ingridient(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=31)
+
+    def __str__(self):
+        return self.name
 
 
 class Measure(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=63)
 
+    def __str__(self):
+        return self.name
+
 
 class Tag(models.Model):
     id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=31)
+
+    def __str__(self):
+        return self.name
 
 
 class Recipe(models.Model):

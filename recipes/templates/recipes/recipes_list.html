@@ -1,0 +1,18 @@
+<html>
+<head>
+    <title>Django Girls blog</title>
+</head>
+<body>
+<div>
+    <h1><a href="/">Django Girls Blog</a></h1>
+</div>
+
+{% for recipe in recipes %}
+<div>
+    <p>name: {{ recipe.name }}</p>
+    <h1><a href="">{{ recipe.title }}</a></h1>
+    <p>{{ recipe.text|linebreaksbr }}</p>
+</div>
+{% endfor %}
+</body>
+</html>
