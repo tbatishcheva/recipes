@@ -59,6 +59,9 @@ class Step(models.Model):
     description = models.TextField()
     img = models.CharField(max_length=255)
 
+    def __str__(self):
+        return str(self.recipe_id) + ' ' + str(self.number) + ' step'
+
 
 class Ingridients_of_recipe(models.Model):
     recipe_id = models.ForeignKey(Recipe)
