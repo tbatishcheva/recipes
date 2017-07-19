@@ -9,11 +9,20 @@
     {% endif %}
     <h1>{{ recipe.description }}</h1>
     <p>{{ recipe.name|linebreaksbr }}</p>
+    <p>{{ recipe.main_img|linebreaksbr }}</p
     <p> Cuisine: {{ recipe.cuisine_id|linebreaksbr }}</p>
     <p> Cooking time: {{ recipe.cooking_time|linebreaksbr }} hour(s) </p>
-    <h1><a href="{% url 'steps_recipe' pk=recipe.pk %}">{{ recipe.name }}</a></h1>
-
-
-
+    <img src=recipe.main_img alt="альтернативный текст">
+    <img src="http://pizza-rapida.ru/wp-content/uploads/2013/09/Pizza.png" alt="альтернативный текст">
+    <p></p>
+    <p><u>Steps for recipe:</u></p>
+    {% for step in recipe.steps %}
+    <div class="recipe">
+        <div class="date">
+            {{ step.number }}
+        </div>
+        <p>{{ step.description|linebreaksbr }}</p>
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}
