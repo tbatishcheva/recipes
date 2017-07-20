@@ -7,21 +7,21 @@
         {{ recipe.creation_time }}
     </div>
     {% endif %}
+    <a class="btn btn-default" href="{% url 'recipe_edit' pk=recipe.pk %}"><span
+            class="glyphicon glyphicon-pencil"></span></a>
     <h1>{{ recipe.description }}</h1>
     <p>{{ recipe.name|linebreaksbr }}</p>
-    <p>{{ recipe.main_img|linebreaksbr }}</p
-    <p> Cuisine: {{ recipe.cuisine_id|linebreaksbr }}</p>
+    <p> Cuisine: {{ recipe.cuisine|linebreaksbr }}</p>
     <p> Cooking time: {{ recipe.cooking_time|linebreaksbr }} hour(s) </p>
-    <img src=recipe.main_img alt="альтернативный текст">
-    <img src="http://pizza-rapida.ru/wp-content/uploads/2013/09/Pizza.png" alt="альтернативный текст">
+    <img class="recipe-img" src="{{recipe.main_img}}" alt="альтернативный текст">
     <p></p>
     <p><u>Steps for recipe:</u></p>
-    {% for step in recipe.steps %}
+    {% for step in recipe.step_set.all %}
     <div class="recipe">
         <div class="date">
-            {{ step.number }}
+            {{ step.description }}
         </div>
-        <p>{{ step.description|linebreaksbr }}</p>
+        <p>{{ step.number|linebreaksbr }}</p>
     </div>
     {% endfor %}
 </div>

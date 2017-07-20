@@ -50,7 +50,6 @@ class Recipe(models.Model):
     description = models.CharField(max_length=64)
     main_img = models.CharField(max_length=255)
     cuisine = models.ForeignKey(Cuisine)
-    # steps = models.ForeignKey
     cooking_time = models.IntegerField()
     creation_time = models.DateTimeField(default=timezone.now)
     update_time = models.DateTimeField(default=timezone.now)

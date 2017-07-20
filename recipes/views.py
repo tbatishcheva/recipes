@@ -1,7 +1,13 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from .models import Recipe, Step
-from .forms import RecipeForm
+from .models import Recipe, User
+from .forms import RecipeForm, ContactForm
+from django.views.generic.edit import FormView
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth import login
+from django.http import HttpResponseRedirect
+from django.views.generic.base import View
+from django.contrib.auth import logout
 
 
 def recipes_list(request):
@@ -10,9 +16,7 @@ def recipes_list(request):
 
 
 def recipe_detail(request, pk):
-
     recipe = get_object_or_404(Recipe, pk=pk)
-    recipe.steps = recipe.step_set.all()
     return render(request, 'recipes/recipe_detail.html', {'recipe': recipe})
 
 
@@ -21,9 +25,60 @@ def recipe_new(request):
         form = RecipeForm(request.POST)
         if form.is_valid():
             recipe = form.save(commit=False)
-            recipe.author = request.user
-            recipe.published_date = timezone.now()
+            # recipe.author = request.user
+            recipe.creation_time = timezone.now()
             recipe.save()
+            return redirect('recipe_detail', pk=recipe.pk)
     else:
         form = RecipeForm()
     return render(request, 'recipes/recipe_edit.html', {'form': form})
+
+
+def recipe_edit(request, pk):
+    recipe = get_object_or_404(Recipe, pk=pk)
+    if request.method == "POST":
+        form = RecipeForm(request.POST, instance=recipe)
+        if form.is_valid():
+            recipe = form.save(commit=False)
+            # recipe.author = request.user
+            recipe.creation_time = timezone.now()
+            recipe.save()
+            return redirect('recipe_detail', pk=recipe.pk)
+    else:
+        form = RecipeForm(instance=recipe)
+    return render(request, 'recipes/recipe_edit.html', {'form': form})
+
+
+class RegisterFormView(FormView):
+    form_class = UserCreationForm
+    success_url = "/login/"
+    template_name = "recipes/register.html"
+    form_class = ContactForm
+
+    def form_valid(self, form):
+        form.save()
+        return super(RegisterFormView, self).form_valid(form)
+
+
+class LoginFormView(FormView):
+    form_class = AuthenticationForm
+    template_name = "recipes/login.html"
+    success_url = "/"
+
+    def form_valid(self, form):
+        self.user = form.get_user()
+
+        login(self.request, self.user)
+        return super(LoginFormView, self).form_valid(form)
+
+
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return HttpResponseRedirect("/")
+
+
+def infouser(request, pk):
+    user = get_object_or_404(User, pk=pk)
+    return render(request, 'recipes/infouser.html', {'user': user})
+
