@@ -1,24 +1,38 @@
 from django import forms
-from .models import Recipe
+from .models import Recipe, User
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.conf import settings
 
 
 class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
         fields = ('name',
-                  'id',
-                  'author',
                   'description',
                   'main_img',
                   'cuisine',
                   'cooking_time')
 
 
-class ContactForm(forms.Form, UserCreationForm):
-    email = forms.EmailField()
+class RegisterForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+
+    class Meta:
+        model = User
+        fields = ("username",
+                  "email")
 
     def send_email(self):
         # send email using the self.cleaned_data dictionary
         pass
+
+
+class UserForm(forms.ModelForm):
+    password = forms.CharField()
+
+    class Meta:
+        model = User
+        fields = ("username",
+                  "email",
+                  )

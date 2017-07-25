@@ -1,13 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from .models import Recipe, User
-from .forms import RecipeForm, ContactForm
+from .models import Recipe
+from .forms import RecipeForm, RegisterForm, UserForm
 from django.views.generic.edit import FormView
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login
 from django.http import HttpResponseRedirect
 from django.views.generic.base import View
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
 
 
 def recipes_list(request):
@@ -25,7 +26,7 @@ def recipe_new(request):
         form = RecipeForm(request.POST)
         if form.is_valid():
             recipe = form.save(commit=False)
-            # recipe.author = request.user
+            recipe.author = request.user
             recipe.creation_time = timezone.now()
             recipe.save()
             return redirect('recipe_detail', pk=recipe.pk)
@@ -50,10 +51,9 @@ def recipe_edit(request, pk):
 
 
 class RegisterFormView(FormView):
-    form_class = UserCreationForm
-    success_url = "/login/"
+    success_url = "/"
     template_name = "recipes/register.html"
-    form_class = ContactForm
+    form_class = RegisterForm
 
     def form_valid(self, form):
         form.save()
@@ -78,7 +78,16 @@ class LogoutView(View):
         return HttpResponseRedirect("/")
 
 
-def infouser(request, pk):
+def author(request, pk):
     user = get_object_or_404(User, pk=pk)
-    return render(request, 'recipes/infouser.html', {'user': user})
+    if request.method == "POST":
+        form = UserForm(request.POST, instance=user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(request.POST['password'])
+            user.save()
+            return redirect('/', pk=user.pk)
+    else:
+        form = UserForm(instance=user)
+    return render(request, 'recipes/author.html', {'form': form})
 

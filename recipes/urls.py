@@ -9,6 +9,6 @@ urlpatterns = [
     url(r'^register/$', views.RegisterFormView.as_view(), name='register'),
     url(r'^login/$', views.LoginFormView.as_view(), name='login'),
     url(r'^logout/$', views.LogoutView.as_view(), name='logout'),
-    url(r'^infouser/(?P<pk>[0-9]+)/$', views.infouser, name='infouser'),
+    url(r'^author/(?P<pk>[0-9]+)/$', views.author, name='author'),
 
 ]
