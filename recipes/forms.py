@@ -1,5 +1,5 @@
 from django import forms
-from .models import Recipe, User
+from .models import Recipe, User, Step
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.conf import settings
@@ -35,4 +35,12 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ("username",
                   "email",
+                  )
+
+
+class StepForm(forms.ModelForm):
+    class Meta:
+        model = Step
+        fields = ("description",
+                  "img"
                   )

@@ -1,10 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from .models import Recipe
-from .forms import RecipeForm, RegisterForm, UserForm
+from .models import Recipe, Step
+from .forms import RecipeForm, RegisterForm, UserForm, StepForm
 from django.views.generic.edit import FormView
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
 from django.views.generic.base import View
 from django.contrib.auth import logout
@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 
 
 def recipes_list(request):
-    recipes = Recipe.objects.filter(creation_time__lte=timezone.now()).order_by('creation_time')
+    recipes = Recipe.objects.all()
     return render(request, 'recipes/recipes_list.html', {'recipes': recipes})
 
 
@@ -41,8 +41,7 @@ def recipe_edit(request, pk):
         form = RecipeForm(request.POST, instance=recipe)
         if form.is_valid():
             recipe = form.save(commit=False)
-            # recipe.author = request.user
-            recipe.creation_time = timezone.now()
+            recipe.update_time = timezone.now()
             recipe.save()
             return redirect('recipe_detail', pk=recipe.pk)
     else:
@@ -50,13 +49,33 @@ def recipe_edit(request, pk):
     return render(request, 'recipes/recipe_edit.html', {'form': form})
 
 
+def step_edit(request, pk):
+    step = get_object_or_404(Step, recipe=pk)
+    if request.method == "POST":
+        form = StepForm(request.POST, instance=step)
+        if form.is_valid():
+            step = form.save(commit=False)
+            step.save()
+            return redirect('recipe_detail', pk=step.pk)
+    else:
+        form = RecipeForm(instance=step)
+    return render(request, 'recipes/step_edit.html', {'form': form})
+
+
 class RegisterFormView(FormView):
-    success_url = "/"
     template_name = "recipes/register.html"
+    success_url = "/"
     form_class = RegisterForm
 
     def form_valid(self, form):
         form.save()
+
+        username = form.cleaned_data['username']
+        password = form.cleaned_data['password1']
+        # authenticate user then login
+        user = authenticate(username=username, password=password)
+        login(self.request, user)
+
         return super(RegisterFormView, self).form_valid(form)
 
 
