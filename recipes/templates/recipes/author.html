@@ -1,9 +1,13 @@
 {% extends 'recipes/base.html' %}
+{% load bootstrap %}
+{{ form|bootstrap }}
 
 {% block content %}
-<h1>User details</h1>
+<h1>My details</h1>
 <form method="POST" class="recipe-form">{% csrf_token %}
-    {{ form.as_p }}
+    {{ form.username|bootstrap }}
+    {{ form.email|bootstrap }}
+    {{ form.password|bootstrap }}
     <button type="submit" class="save btn btn-default">Save</button>
 </form>
 {% endblock %}

@@ -9,28 +9,44 @@
     <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css">
 </head>
 <body>
-<div class="page-header">
-    {% if user.is_authenticated %}
-    <a href="{% url 'recipe_new' %}" class="btn btn-success btn-md"><span class="glyphicon glyphicon-plus"></span>Add
-        recipe</a>
-    <a href="{% url 'author' pk=user.pk %}" class="btn btn-info btn-md">{{ user }} (about me)</a>
-    <a href="{% url 'logout' %}" class="btn btn-warning btn-md">Logout</a>
-    {% else %}
-    <a href="{% url 'register' %}" class="btn btn-primary btn-md">Registration</a>
-    <a href="{% url 'login' %}" class="btn btn-success btn-md">Login</a>
 
-    <a href="{% url 'register' %}" class="top-menu">Registration</a>
-    <a href="{% url 'login' %}" class="top-menu">Login</a>
-    {% endif %}
-    <h1><a href="/">Ma cuisine</a></h1>
-</div>
-<div class="content container">
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Ma cuisine</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse pull-right">
+            <ul class="nav navbar-nav">
+                {% if user.is_authenticated %}
+
+                <li class="active"><a href="{% url 'recipe_new' %}">Add recipe</a></li>
+                <li><a href="{% url 'author' pk=user.pk %}">{{ user }} (about me)</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+                {% else %}
+                <li><a href="{% url 'register' %}">Registration</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
+
+                {% endif %}
+
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+
+<div class="container">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             {% block content %}
             {% endblock %}
         </div>
     </div>
-</div>
+</div><!-- /.container -->
 </body>
 </html>

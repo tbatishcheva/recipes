@@ -7,29 +7,50 @@
         {{ recipe.creation_time }}
     </div>
     {% endif %}
-    <a class="btn btn-default" href="{% url 'recipe_edit' pk=recipe.pk %}"><span
-            class="glyphicon glyphicon-pencil"></span>Edit recipe</a>
-    <h1>{{ recipe.description }}</h1>
-    <p>{{ recipe.name|linebreaksbr }}</p>
-    <p> Cuisine: {{ recipe.cuisine|linebreaksbr }}</p>
-    <p> Cooking time: {{ recipe.cooking_time|linebreaksbr }} hour(s) </p>
-    <img class="recipe-img" src="{{recipe.main_img}}" alt="image not found">
-    <p></p>
+    <div class="jumbotron">
+        <a class="btn btn-default pull-right" href="{% url 'recipe_edit' pk=recipe.pk %}"><span
+                class="glyphicon glyphicon-pencil"></span> Edit recipe</a>
+
+        <h1>{{ recipe.description }}</h1>
+        <img class="recipe-img pull-right" src="{{recipe.main_img}}" alt="image not found">
+
+        <p>{{ recipe.name|linebreaksbr }}</p>
+        <p> Cuisine: {{ recipe.cuisine|linebreaksbr }}</p>
+        <p> Cooking time: {{ recipe.cooking_time|linebreaksbr }} hour(s) </p>
+    </div>
+
     <div class="recipe">
         <div class="date">
         </div>
         <p><u>Steps for recipe:</u></p>
     </div>
     <hr>
-    {% for step in recipe.step_set.all %}
-    <div class="recipe">
-        <div class="date">
-            {{ step.description }}
-        </div>
-        <p>{{ step.number|linebreaksbr }}</p>
-        <img class="recipe-img" src="{{step.img}}" alt="альтернативный текст">
-        <hr>
-    </div>
-    {% endfor %}
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>description</th>
+            <th>image</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for step in recipe.step_set.all %}
+        <tr>
+            <th>
+                <p>{{ step.number|linebreaksbr }}</p>
+            </td>
+            </th>
+
+            <td>
+                {{ step.description }}
+            </td>
+            <td>
+                <img class="recipe-img img-circle" src="{{step.img}}" alt="can not load image">
+                <hr>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 </div>
 {% endblock %}
