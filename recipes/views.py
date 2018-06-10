@@ -7,8 +7,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login, authenticate
 from django.http import HttpResponseRedirect
 from django.views.generic.base import View
-from django.contrib.auth import logout
+from django.contrib.auth import logout, update_session_auth_hash
 from django.contrib.auth.models import User
+
 
 
 def recipes_list(request):
@@ -50,15 +51,15 @@ def recipe_edit(request, pk):
 
 
 def step_edit(request, pk):
-    step = get_object_or_404(Step, recipe=pk)
+    step = get_object_or_404(Step, pk=pk)
     if request.method == "POST":
         form = StepForm(request.POST, instance=step)
         if form.is_valid():
             step = form.save(commit=False)
             step.save()
-            return redirect('recipe_detail', pk=step.pk)
+            return redirect('recipe_detail', pk=step.recipe.pk)
     else:
-        form = RecipeForm(instance=step)
+        form = StepForm(instance=step)
     return render(request, 'recipes/step_edit.html', {'form': form})
 
 
@@ -105,7 +106,7 @@ def author(request, pk):
             user = form.save(commit=False)
             user.set_password(request.POST['password'])
             user.save()
-            return redirect('/', pk=user.pk)
+            return redirect('/login/', pk=user.pk)
     else:
         form = UserForm(instance=user)
     return render(request, 'recipes/author.html', {'form': form})

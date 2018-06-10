@@ -1,9 +1,19 @@
 {% extends 'recipes/base.html' %}
+{% load bootstrap %}
+{{ form|bootstrap }}
 
 {% block content %}
+{% if user.is_authenticated %}
+
 <h1>Edit {{ form.field.name }}</h1>
 <form method="POST" class="recipe-form">{% csrf_token %}
-    {{ form.as_ul }}
+
+    {{ form.description|bootstrap }}
+    {{ form.img|bootstrap }}
+
     <button type="submit" class="save btn btn-default">Save</button>
 </form>
+{% else %}
+<h1><b class="text-muted">{{ "Welcome to Recipes! You have to LogIn or Register." }}</b></h1>
+{% endif %}
 {% endblock %}

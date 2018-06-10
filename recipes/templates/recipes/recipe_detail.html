@@ -1,6 +1,8 @@
 {% extends 'recipes/base.html' %}
 
 {% block content %}
+{% if user.is_authenticated %}
+
 <div class="post">
     {% if recipe.creation_time %}
     <div class="date">
@@ -20,10 +22,12 @@
     </div>
 
     <div class="recipe">
+
         <div class="date">
+
         </div>
         <p><u>Steps for recipe:</u></p>
-    </div>
+        </div>
     <hr>
     <table class="table table-condensed">
         <thead>
@@ -38,6 +42,9 @@
         <tr>
             <th>
                 <p>{{ step.number|linebreaksbr }}</p>
+            <a class="btn btn-default pull-right" href="{% url 'step_edit' pk=step.pk %}"><span
+                class="glyphicon glyphicon-pencil"></span>Edit step</a>
+
             </td>
             </th>
 
@@ -53,4 +60,7 @@
         </tbody>
     </table>
 </div>
+{% else %}
+<h1><b class="text-muted">{{ "Welcome to Recipes! You have to LogIn or Register." }}</b></h1>
+{% endif %}
 {% endblock %}
