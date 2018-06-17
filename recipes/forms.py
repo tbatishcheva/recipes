@@ -41,5 +41,7 @@ class UserForm(forms.ModelForm):
 class StepForm(forms.ModelForm):
     class Meta:
         model = Step
-        fields = ('description',
+        fields = (
+                  'description',
+                  'number',
                   'img')

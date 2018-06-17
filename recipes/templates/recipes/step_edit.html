@@ -9,7 +9,9 @@
 <form method="POST" class="recipe-form">{% csrf_token %}
 
     {{ form.description|bootstrap }}
+    {{ form.number|bootstrap }}
     {{ form.img|bootstrap }}
+
 
     <button type="submit" class="save btn btn-default">Save</button>
 </form>

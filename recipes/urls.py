@@ -11,5 +11,7 @@ urlpatterns = [
     url(r'^logout/$', views.LogoutView.as_view(), name='logout'),
     url(r'^author/(?P<pk>[0-9]+)/$', views.author, name='author'),
     url(r'^step/(?P<pk>[0-9]+)/edit/$', views.step_edit, name='step_edit'),
+    url(r'^step/(?P<pk>[0-9]+)/delete/$', views.step_delete, name='step_delete'),
+    url(r'^step/new/(?P<pk_recipe>[0-9]+)/$', views.step_new, name='step_new'),
 
 ]

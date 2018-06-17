@@ -11,7 +11,7 @@
     {% endif %}
     <div class="jumbotron">
         <a class="btn btn-default pull-right" href="{% url 'recipe_edit' pk=recipe.pk %}"><span
-                class="glyphicon glyphicon-pencil"></span> Edit recipe</a>
+                class="glyphicon glyphicon-pencil"></span>Edit recipe</a>
 
         <h1>{{ recipe.description }}</h1>
         <img class="recipe-img pull-right" src="{{recipe.main_img}}" alt="image not found">
@@ -27,9 +27,12 @@
 
         </div>
         <p><u>Steps for recipe:</u></p>
-        </div>
+    </div>
     <hr>
     <table class="table table-condensed">
+
+        <a class="btn btn-default pull-right" href="{% url 'step_new' pk_recipe=recipe.pk %}"><span
+                class="glyphicon glyphicon-pencil"></span>Add step</a>
         <thead>
         <tr>
             <th>#</th>
@@ -42,9 +45,6 @@
         <tr>
             <th>
                 <p>{{ step.number|linebreaksbr }}</p>
-            <a class="btn btn-default pull-right" href="{% url 'step_edit' pk=step.pk %}"><span
-                class="glyphicon glyphicon-pencil"></span>Edit step</a>
-
             </td>
             </th>
 
@@ -54,8 +54,14 @@
             <td>
                 <img class="recipe-img img-circle" src="{{step.img}}" alt="can not load image">
                 <hr>
+                <a class="btn btn-default pull-right" href="{% url 'step_edit' pk=step.pk %}"><span
+                        class="glyphicon glyphicon-pencil"></span>Edit step</a>
+                <a class="btn btn-default pull-right" href="{% url 'step_delete' pk=step.pk %}"><span
+                        class="glyphicon glyphicon-pencil"></span>Delete step</a>
             </td>
+
         </tr>
+
         {% endfor %}
         </tbody>
     </table>
